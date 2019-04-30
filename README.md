@@ -1,1 +1,1 @@
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/ for how to compile this example.
+This is my note about Bayesian linear regression model. I try to cover most of important topics and provides with details, such as derivatives, R code, simulation and real data analysis to illustrate it. 
