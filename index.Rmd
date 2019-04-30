@@ -2,12 +2,12 @@
 title: "Bayesian Linear Model"
 author: "Caleb Jin"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
+bibliography: book.bib
+description: This is my note of Bayesian linear model, advised by [Dr. Gyuhyeong Goh](https://sites.google.com/site/bayesiangoh/)
 documentclass: book
-bibliography: [book.bib]
-biblio-style: apalike
 link-citations: yes
-description: "This is my note of Bayesian linear model, advised by [Dr. Gyuhyeong Goh](https://sites.google.com/site/bayesiangoh/)"
+site: bookdown::bookdown_site
+biblio-style: apalike
 ---
 
 # Foreword {-#Foreword}

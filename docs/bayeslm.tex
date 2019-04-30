@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-19}
+    \date{2019-04-20}
 
 \usepackage{booktabs}
 
@@ -142,10 +142,82 @@
 
 I am Caleb Jin. This is my note of Bayesian linear regression model under the guidance of \href{https://sites.google.com/site/bayesiangoh/}{Dr.~Gyuhyeong Goh}. It includes both derivative details, proof of lemma, ggplot and Rshiny to illustrate Bayesian linear regression model. In this way, I can organize my thought and benefit readers hopefully. Due to my very limited statistics knowledge, if making any mistakes, I sincerely expect you guys can email to me. My email address is \href{mailto:jinsq@ksu.edu}{\nolinkurl{jinsq@ksu.edu}}. Appreicate!
 
+\newcommand\pr{{\rm pr}}
+\newcommand\E{{\rm E}}
+\newcommand\V{{\rm Var}}
+\newcommand\uA{{\bf A}}
+\newcommand\ua{{\bf a}}
+\newcommand\uB{{\bf B}}
+\newcommand\ub{{\bf b}}
+\newcommand\uC{{\bf C}}
+\newcommand\uc{{\bf c}}
+\newcommand\uD{{\bf D}}
+\newcommand\ud{{\bf d}}
+\newcommand\ue{{\bf e}}
+\newcommand\uE{{\bf E}}
+\newcommand\uf{{\bf f}}
+\newcommand\uh{{\bf h}}
+\newcommand\ug{{\bf g}}
+\newcommand\uI{{\bf I}}
+\newcommand\uK{{\bf K}}
+\newcommand\um{{\bf m}}
+\newcommand\uM{{\bf M}}
+\newcommand\T{{\bf T}}
+\newcommand\bO{{\bf O}}
+\newcommand\bP{{\bf P}}
+\newcommand\uQ{{\bf Q}}
+\newcommand\uU{{\bf U}}
+\newcommand\uv{{\bf v}}
+\newcommand\uV{{\bf V}}
+\newcommand\uS{{\bf S}}
+\newcommand\uu{{\bf u}}
+\newcommand\uw{{\bf w}}
+\newcommand\uW{{\bf W}}
+\newcommand\uH{{\bf H}}
+\newcommand\uX{{\bf X}}
+\newcommand\ux{{\bf x}}
+\newcommand\uY{{\bf Y}}
+\newcommand\uy{{\bf y}}
+\newcommand\uZ{{\bf Z}}
+\newcommand\uz{{\bf z}}
+\newcommand\0{{\boldsymbol 0}}
+\newcommand\1{{\boldsymbol 1}}
+\newcommand\ubeta{{\boldsymbol \beta}}
+\newcommand\btau{{\boldsymbol \tau}}
+\newcommand\bg{{\boldsymbol \gamma}}
+\newcommand\ueta{{\boldsymbol \eta}}
+\newcommand\bpi{{\boldsymbol \pi}}
+\newcommand\uxi{{\boldsymbol \xi}}
+\newcommand\utheta{{\boldsymbol \theta}}
+\newcommand\umu{{\boldsymbol \mu}}
+\newcommand\uepsilon{{\boldsymbol \epsilon}}
+\newcommand\bOmega{{\boldsymbol\Omega}}
+\newcommand\uSigma{{\boldsymbol \Sigma}}
+\newcommand\uPsi{{\boldsymbol \Psi}}
+\newcommand\bLam{{\bf \Lambda}}
+\newcommand\ualpha{{\boldsymbol \alpha}}
+\newcommand\usigma{{\boldsymbol \sigma}}
+\newcommand\uphi{{\boldsymbol \phi}}
+\newcommand\nbd{{\rm nbd}}
+\newcommand\diag{{\rm diag}}
+
 \hypertarget{intro}{%
 \chapter{Introduction}\label{intro}}
 
-You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
+\section{Setup}
+
+Supperefficiency in Hodeges (see Lehmann 1983, p.~405)
+\(X_i \overset{i.i.d.}{\sim} N(\theta,1)\), then superefficiency estimator of \(\theta\) is
+Consider a multiple linear regression model as follows:
+\({\bf y}\)
+
+f
+
+\[{\bf y}={\bf X}{\boldsymbol \beta}+ {\boldsymbol \epsilon}\]
+
+Consider a multiple linear regression model as follows:
+
+You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{intro}.
 
 Figures and tables with captions will be placed in \texttt{figure} and \texttt{table} environments, respectively.
 
@@ -211,33 +283,7 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 \end{tabular}
 \end{table}
 
-You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
-
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
-
-Here is a review of existing methods.
-
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
-
-We describe our methods in this chapter.
-
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
-
-Some \emph{significant} applications are demonstrated in this chapter.
-
-\hypertarget{example-one}{%
-\section{Example one}\label{example-one}}
-
-\hypertarget{example-two}{%
-\section{Example two}\label{example-two}}
-
-\hypertarget{final-words}{%
-\chapter{Final Words}\label{final-words}}
-
-We have finished a nice book.
+You can write citations, too. For example, we are using the \textbf{bookdown} package in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
 
 \bibliography{book.bib}
 

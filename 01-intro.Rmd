@@ -1,21 +1,153 @@
+---
+date: "February 14, 2019"
+header-includes:
+- \usepackage{bbm}
+- \usepackage{amsmath}
+- \usepackage{graphicx}
+- \usepackage{caption}
+- \usepackage{bm}
+- \usepackage{multirow}
+- \usepackage{float}
+- \usepackage{color}
+- \usepackage{amssymb}
+- \usepackage{amsthm}
+output:
+  html_document: default
+---
+\newcommand\pr{{\rm pr}}
+\newcommand\E{{\rm E}}
+\newcommand\V{{\rm Var}}
+\newcommand\uA{{\bf A}}
+\newcommand\ua{{\bf a}}
+\newcommand\uB{{\bf B}}
+\newcommand\ub{{\bf b}}
+\newcommand\uC{{\bf C}}
+\newcommand\uc{{\bf c}}
+\newcommand\uD{{\bf D}}
+\newcommand\ud{{\bf d}}
+\newcommand\ue{{\bf e}}
+\newcommand\uE{{\bf E}}
+\newcommand\uf{{\bf f}}
+\newcommand\uh{{\bf h}}
+\newcommand\ug{{\bf g}}
+\newcommand\uI{{\bf I}}
+\newcommand\uK{{\bf K}}
+\newcommand\um{{\bf m}}
+\newcommand\uM{{\bf M}}
+\newcommand\T{{\bf T}}
+\newcommand\bO{{\bf O}}
+\newcommand\bP{{\bf P}}
+\newcommand\uQ{{\bf Q}}
+\newcommand\uU{{\bf U}}
+\newcommand\uv{{\bf v}}
+\newcommand\uV{{\bf V}}
+\newcommand\uS{{\bf S}}
+\newcommand\uu{{\bf u}}
+\newcommand\uw{{\bf w}}
+\newcommand\uW{{\bf W}}
+\newcommand\uH{{\bf H}}
+\newcommand\uX{{\bf X}}
+\newcommand\ux{{\bf x}}
+\newcommand\uY{{\bf Y}}
+\newcommand\uy{{\bf y}}
+\newcommand\uZ{{\bf Z}}
+\newcommand\uz{{\bf z}}
+\newcommand\0{{\boldsymbol 0}}
+\newcommand\1{{\boldsymbol 1}}
+\newcommand\ubeta{{\boldsymbol \beta}}
+\newcommand\btau{{\boldsymbol \tau}}
+\newcommand\bg{{\boldsymbol \gamma}}
+\newcommand\ueta{{\boldsymbol \eta}}
+\newcommand\bpi{{\boldsymbol \pi}}
+\newcommand\uxi{{\boldsymbol \xi}}
+\newcommand\utheta{{\boldsymbol \theta}}
+\newcommand\umu{{\boldsymbol \mu}}
+\newcommand\uepsilon{{\boldsymbol \epsilon}}
+\newcommand\bOmega{{\boldsymbol\Omega}}
+\newcommand\uSigma{{\boldsymbol \Sigma}}
+\newcommand\uPsi{{\boldsymbol \Psi}}
+\newcommand\bLam{{\bf \Lambda}}
+\newcommand\ualpha{{\boldsymbol \alpha}}
+\newcommand\usigma{{\boldsymbol \sigma}}
+\newcommand\uphi{{\boldsymbol \phi}}
+\newcommand\nbd{{\rm nbd}}
+\newcommand\diag{{\rm diag}}
+
 # Introduction {#intro}
+## Linear model
+Consider a multiple linear regression model as follows:
+$$\uy=\uX\ubeta + \uepsilon,$$
+where $\uy=(y_1,y_2,\dots,y_n)^{\T}$ is the $n$-dimensional response vector, $\uX=(\ux_1,\ux_2, \dots, \ux_n)^{\T}$ is the $n\times p$ design matrix, and $\uepsilon \sim \mathcal{N}_n(\0,\sigma^2\uI_n)$. We assume that $p<n$ and $\uX$ is full rank. 
 
-You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods).
+## Maximum likelihood estimation
 
-Figures and tables with captions will be placed in `figure` and `table` environments, respectively.
+Since $\uy \sim \mathcal{N}_n(\uX\ubeta, \sigma^2\uI_n)$, the likelihood function is given as
+\begin{eqnarray*}
+L(\ubeta,\sigma^2)&=&f(\uy|\ubeta,\sigma^2)\\
+&= &(2\pi)^{-\frac{n}{2}}\lvert \uSigma \lvert^{-\frac{1}{2}} \exp\left\{-\frac{1}{2}(\uy-\uX\ubeta)^{\T}\uSigma^{-1}(\uy-\uX\ubeta)\right\} ,
+\end{eqnarray*}
 
-```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'}
-par(mar = c(4, 4, .1, .1))
-plot(pressure, type = 'b', pch = 19)
-```
+where $\uSigma=\sigma^2 \uI_n$.
+Then the log likelihood can be written as
+\begin{eqnarray*}
+l(\ubeta,\sigma^2)&=&\log L(\ubeta,\sigma^2)\\
+&=&-\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\sigma^2) - \frac{1}{2\sigma^2}(\uy-\uX\ubeta)^{\T}(\uy-\uX\ubeta).
+\end{eqnarray*}
+Note that $l(\ubeta,\sigma^2)$ is a concave function in $(\ubeta,\sigma^2)$. Hence, the maximum likelihood estimator (MLE) can be obtained
+by solving the following equations:
+\begin{eqnarray*}
+\frac{\partial l(\ubeta,\sigma^2)}{\partial \ubeta} &=&- \frac{1}{2\sigma^2}(-2\uX^{\T} \uy + 2\uX^{\T} \uX\ubeta)=0;
 
-Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab).
+\frac{\partial l(\ubeta,\sigma^2)}{\partial \sigma^2} &=&-\frac{n}{2}\frac{1}{\sigma^2} + \frac{1}{2}\frac{1}{(\sigma^2)^2}
+\mathbf{(\uy-\uX\ubeta)^T(\uy-\uX\ubeta)}=0.
+\end{eqnarray*}
+Therefore, the MLEs of $\ubeta$ and $\sigma^2$ are given as
+\begin{eqnarray*}
+\hat{\beta} &=& (\uX^{\T} \uX)^{-1}\uX^{\T} \uy;\\
+\hat{\sigma}^2 &=& \frac{(\uy-\uX\hat{\ubeta})^{\T}(\uy-\uX\hat{\ubeta})}{n}=\frac{ \|\uy-\hat{\uy}\|^2}{n},
+\end{eqnarray*}
+where $\hat{\uy}=\uX\hat{\ubeta}$. Note that if $\uz\sim \mathcal{N}_k(\mu,\Sigma)$, then $A\uz\sim \mathcal{N}_m(A\mu,A\Sigma A^{\T})$,
+where $A$ is an $m\times k$ matrix. Since $\uy \sim \mathcal{N}_n(\uX\ubeta, \sigma^2\uI_n)$ and $\hat{\ubeta} =(\uX^{\T} \uX)^{-1}\uX^{\T}\uy$,
+we have
+\begin{eqnarray*}
+\hat{\ubeta}  &\sim& \mathcal{N}_p\left( (\uX^{\T} \uX)^{-1}\uX^{\T}\uX\ubeta, \sigma^2 (\uX^{\T} \uX)^{-1}\uX^{\T}\uX (\uX^{\T} \uX)^{-1}\right)\\
+&=&\mathcal{N}_p\left(\ubeta, \sigma^2 (\uX^{\T} \uX)^{-1}\right).
+\end{eqnarray*}
+Note that
+$\uy-\hat{\uy}=(\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T})\uy$, where $\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T}$ is an idempotent matrix of rank $(n-p)$.
 
-```{r nice-tab, tidy=FALSE}
-knitr::kable(
-  head(iris, 20), caption = 'Here is a nice table!',
-  booktabs = TRUE
-)
-```
+$\color{red}{\text{Can you prove that $\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T}$ s an idempotent matrix of rank $(n-p)$ ?}}$ 
 
-You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015].
+Proof:
+Let $\uH = \uX(\uX^{\T}\uX)^{-1}\uX^{\T}$.
+
+$\uH\uH = \uX(\uX^{\T}\uX)^{-1}\uX^{\T}\uX(\uX^{\T}\uX)^{-1}\uX^{\T}=\uX(\uX^{\T}\uX)^{-1}\uX^{\T}=\uH$
+,hence $\uH$ is idempotent matrix. Then $(\uI_n-\uH)(\uI_n-\uH) = \uI_n-\uH$, hence $(\uI_n-\uH)$ is also idempotent.
+hence we have $r(\uI_n-\uH)=tr(\uI_n-\uH)=n-tr(\uH)=n-tr((\uX^{\T}\uX)^{-1}\uX^{\T}\uX)=n-p$
+$\color{red}{\text{How to prove $r(\uI_n-\uH)=tr(\uI_n-\uH)$? }}$
+The eigenvalue of idempotent matrix is either 1 or 0, hence the rank of it is the sum of eigenvalues, which equals the trace of matrix;
+
+$\color{red}{\text{How to prove trace of matrix is the sum of eigenvalues?}}$
+
+It requires characteristic polynomial. 
+
+Another way to prove this is in this 
+[link]("https://math.stackexchange.com/questions/101512/proving-the-trace-of-an-idempotent-matrix-equals-the-rank-of-the-matrix")
+
+From Lemma \ref{lem:1}, we have that
+\begin{eqnarray}
+\label{eq:1} n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p),
+\end{eqnarray}
+where $\chi^2(n-p)$ denotes the chi-squared distribution with degrees of freedom $n-p$.  \textcolor{red}{(Can you prove
+Eq. (\ref{eq:1})?)}
+
+Proof: By Lemma 1, we have \\$n\frac{\hat{\sigma}^2}{\sigma^2}=\frac{\hat e^{\T}\hat e}{\sigma^2}=\uy^{\T}(\frac{\uI_n-\uH}{\sigma^2})
+\uy=\uy^{\T}\uA\uy \sim\chi^2(tr(\uA\uSigma),\mu^{\T}\uA\mu/2)$
+
+where $\uA =\frac{\uI_n-\uH}{\sigma^2}$, $\mu^{\T}\uA\mu/2=(\uX\ubeta)^{\T}(\frac{\uI_n-\uH}{\sigma^2})(\uX\ubeta)/2=0$. $\uA\uSigma =
+(\frac{\uI_n-\uH}{\sigma^2})\sigma^2\uI_n=\uI_n-\uH,$ hence $r(\uA\uSigma) = n-p$. Therefore $n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p)$
+\begin{lemma}
+\label{lem:1} Let $\uz\sim \mathcal{N}_k(\mu,\Sigma)$ with $r(\Sigma)=k$, where $r(\Sigma)$ denotes the rank of $\Sigma$.
+If $A\Sigma$ (or $\Sigma \uA$) is an idempotent matrix of rank $m$, then $\uz^{\T}\uA\uz$ follows the non-central chi-squared distribution
+with degrees of freedom $m$ and non-central parameter $\lambda=\mu^{\T}\uA\mu/2$.
+\end{lemma}
