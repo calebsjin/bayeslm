@@ -25,7 +25,7 @@
 <meta name="author" content="Caleb Jin">
 
 
-<meta name="date" content="2019-04-30">
+<meta name="date" content="2019-05-08">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -70,7 +70,14 @@
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
 <li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
 <li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#linear-model"><i class="fa fa-check"></i><b>1.1</b> Linear model</a></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation-mle-approach"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation (MLE) approach</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#distribution-of-hatboldsymbol-beta"><i class="fa fa-check"></i><b>1.2.1</b> Distribution of <span class="math inline">\(\hat{\boldsymbol \beta}\)</span></a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#distribution-of-hatsigma2"><i class="fa fa-check"></i><b>1.2.2</b> Distribution of <span class="math inline">\(\hat\sigma^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#bayesian-approach"><i class="fa fa-check"></i><b>1.3</b> Bayesian approach</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#sigma2-is-known"><i class="fa fa-check"></i><b>1.3.1</b> <span class="math inline">\(\sigma^2\)</span> is known</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#sigma2-is-unknown"><i class="fa fa-check"></i><b>1.3.2</b> <span class="math inline">\(\sigma^2\)</span> is unknown</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -101,8 +108,8 @@
 <span class="math display">\[{\bf y}={\bf X}{\boldsymbol \beta}+ {\boldsymbol \epsilon},\]</span>
 where <span class="math inline">\({\bf y}=(y_1,y_2,\dots,y_n)^{{\bf T}}\)</span> is the <span class="math inline">\(n\)</span>-dimensional response vector, <span class="math inline">\({\bf X}=({\bf x}_1,{\bf x}_2, \dots, {\bf x}_n)^{{\bf T}}\)</span> is the <span class="math inline">\(n\times p\)</span> design matrix, and <span class="math inline">\({\boldsymbol \epsilon}\sim \mathcal{N}_n({\boldsymbol 0},\sigma^2{\bf I}_n)\)</span>. We assume that <span class="math inline">\(p&lt;n\)</span> and <span class="math inline">\({\bf X}\)</span> is full rank.</p>
 </div>
-<div id="maximum-likelihood-estimation" class="section level2">
-<h2><span class="header-section-number">1.2</span> Maximum likelihood estimation</h2>
+<div id="maximum-likelihood-estimation-mle-approach" class="section level2">
+<h2><span class="header-section-number">1.2</span> Maximum likelihood estimation (MLE) approach</h2>
 <p>Since <span class="math inline">\({\bf y}\sim \mathcal{N}_n({\bf X}{\boldsymbol \beta}, \sigma^2{\bf I}_n)\)</span>, the likelihood function is given as
 <span class="math display">\[\begin{eqnarray*}
 L({\boldsymbol \beta},\sigma^2)&amp;=&amp;f({\bf y}|{\boldsymbol \beta},\sigma^2)\\
@@ -118,7 +125,7 @@ Note that <span class="math inline">\(l({\boldsymbol \beta},\sigma^2)\)</span> i
 by solving the following equations:
 <span class="math display">\[\begin{eqnarray*}
 \frac{\partial l({\boldsymbol \beta},\sigma^2)}{\partial {\boldsymbol \beta}} &amp;=&amp;- \frac{1}{2\sigma^2}(-2{\bf X}^{{\bf T}} {\bf y}+ 2{\bf X}^{{\bf T}} {\bf X}{\boldsymbol \beta})=0;
-
+\\
 \frac{\partial l({\boldsymbol \beta},\sigma^2)}{\partial \sigma^2} &amp;=&amp;-\frac{n}{2}\frac{1}{\sigma^2} + \frac{1}{2}\frac{1}{(\sigma^2)^2}
 \mathbf{({\bf y}-{\bf X}{\boldsymbol \beta})^T({\bf y}-{\bf X}{\boldsymbol \beta})}=0.
 \end{eqnarray*}\]</span>
@@ -127,36 +134,165 @@ Therefore, the MLEs of <span class="math inline">\({\boldsymbol \beta}\)</span> 
 \hat{\beta} &amp;=&amp; ({\bf X}^{{\bf T}} {\bf X})^{-1}{\bf X}^{{\bf T}} {\bf y};\\
 \hat{\sigma}^2 &amp;=&amp; \frac{({\bf y}-{\bf X}\hat{{\boldsymbol \beta}})^{{\bf T}}({\bf y}-{\bf X}\hat{{\boldsymbol \beta}})}{n}=\frac{ \|{\bf y}-\hat{{\bf y}}\|^2}{n},
 \end{eqnarray*}\]</span>
-where <span class="math inline">\(\hat{{\bf y}}={\bf X}\hat{{\boldsymbol \beta}}\)</span>. Note that if <span class="math inline">\({\bf z}\sim \mathcal{N}_k(\mu,\Sigma)\)</span>, then <span class="math inline">\(A{\bf z}\sim \mathcal{N}_m(A\mu,A\Sigma A^{{\bf T}})\)</span>,
+where <span class="math inline">\(\hat{{\bf y}}={\bf X}\hat{{\boldsymbol \beta}}\)</span>.</p>
+<div id="distribution-of-hatboldsymbol-beta" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Distribution of <span class="math inline">\(\hat{\boldsymbol \beta}\)</span></h3>
+<p>Note that if <span class="math inline">\({\bf z}\sim \mathcal{N}_k(\mu,\Sigma)\)</span>, then <span class="math inline">\(A{\bf z}\sim \mathcal{N}_m(A\mu,A\Sigma A^{{\bf T}})\)</span>,
 where <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\times k\)</span> matrix. Since <span class="math inline">\({\bf y}\sim \mathcal{N}_n({\bf X}{\boldsymbol \beta}, \sigma^2{\bf I}_n)\)</span> and <span class="math inline">\(\hat{{\boldsymbol \beta}} =({\bf X}^{{\bf T}} {\bf X})^{-1}{\bf X}^{{\bf T}}{\bf y}\)</span>,
 we have
 <span class="math display">\[\begin{eqnarray*}
 \hat{{\boldsymbol \beta}}  &amp;\sim&amp; \mathcal{N}_p\left( ({\bf X}^{{\bf T}} {\bf X})^{-1}{\bf X}^{{\bf T}}{\bf X}{\boldsymbol \beta}, \sigma^2 ({\bf X}^{{\bf T}} {\bf X})^{-1}{\bf X}^{{\bf T}}{\bf X}({\bf X}^{{\bf T}} {\bf X})^{-1}\right)\\
 &amp;=&amp;\mathcal{N}_p\left({\boldsymbol \beta}, \sigma^2 ({\bf X}^{{\bf T}} {\bf X})^{-1}\right).
-\end{eqnarray*}\]</span>
-Note that
-<span class="math inline">\({\bf y}-\hat{{\bf y}}=({\bf I}_n-{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}){\bf y}\)</span>, where <span class="math inline">\({\bf I}_n-{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}\)</span> is an idempotent matrix of rank <span class="math inline">\((n-p)\)</span>.</p>
+\end{eqnarray*}\]</span></p>
+</div>
+<div id="distribution-of-hatsigma2" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Distribution of <span class="math inline">\(\hat\sigma^2\)</span></h3>
+<p>Note that
+<span class="math inline">\({\bf y}-\hat{{\bf y}}=({\bf I}_n-{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}){\bf y}\)</span>, where <span class="math inline">\({\bf I}_n-{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}\)</span> is an idempotent matrix with rank <span class="math inline">\((n-p)\)</span>.</p>
 <p><span class="math inline">\(\color{red}{\text{Can you prove that ${\bf I}_n-{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}$ s an idempotent matrix of rank $(n-p)$ ?}}\)</span></p>
-<p>Proof:
-Let <span class="math inline">\({\bf H}= {\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}\)</span>.</p>
+
+<div class="proof">
+<p> <span class="proof"><em>Proof. </em></span> Let <span class="math inline">\({\bf H}= {\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}\)</span>.</p>
 <p><span class="math inline">\({\bf H}{\bf H}= {\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}{\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}={\bf X}({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}={\bf H}\)</span>
-,hence <span class="math inline">\({\bf H}\)</span> is idempotent matrix. Then <span class="math inline">\(({\bf I}_n-{\bf H})({\bf I}_n-{\bf H}) = {\bf I}_n-{\bf H}\)</span>, hence <span class="math inline">\(({\bf I}_n-{\bf H})\)</span> is also idempotent.
-hence we have <span class="math inline">\(r({\bf I}_n-{\bf H})=tr({\bf I}_n-{\bf H})=n-tr({\bf H})=n-tr(({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}{\bf X})=n-p\)</span>
-<span class="math inline">\(\color{red}{\text{How to prove $r({\bf I}_n-{\bf H})=tr({\bf I}_n-{\bf H})$? }}\)</span>
-The eigenvalue of idempotent matrix is either 1 or 0, hence the rank of it is the sum of eigenvalues, which equals the trace of matrix;</p>
+thus <span class="math inline">\({\bf H}\)</span> is idempotent matrix.</p>
+<p>Similarly, as <span class="math inline">\(({\bf I}_n-{\bf H})({\bf I}_n-{\bf H}) = {\bf I}_n-{\bf H}\)</span>, <span class="math inline">\(({\bf I}_n-{\bf H})\)</span> is also idempotent.</p>
+Hence we have <span class="math inline">\(r({\bf I}_n-{\bf H})=tr({\bf I}_n-{\bf H})=n-tr({\bf H})=n-tr(({\bf X}^{{\bf T}}{\bf X})^{-1}{\bf X}^{{\bf T}}{\bf X})=n-p\)</span>
+</div>
+
+<p><span class="math inline">\(\color{red}{\text{How to prove $r({\bf I}_n-{\bf H})=tr({\bf I}_n-{\bf H})$? }}\)</span></p>
+<p>The eigenvalue of idempotent matrix is either 1 or 0, hence the rank of it is the sum of eigenvalues, which equals the trace of matrix;</p>
 <p><span class="math inline">\(\color{red}{\text{How to prove trace of matrix is the sum of eigenvalues?}}\)</span></p>
 <p>It requires characteristic polynomial.</p>
 <p>Another way to prove this is in this
 <a href="%22https://math.stackexchange.com/questions/101512/proving-the-trace-of-an-idempotent-matrix-equals-the-rank-of-the-matrix%22">link</a></p>
-<p>From Lemma , we have that
+<p>From Lemma <a href="intro.html#lem:lem1">1.1</a>, we have that
 <span class="math display">\[\begin{eqnarray}
 \label{eq:1} n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p),
 \end{eqnarray}\]</span>
 where <span class="math inline">\(\chi^2(n-p)\)</span> denotes the chi-squared distribution with degrees of freedom <span class="math inline">\(n-p\)</span>. </p>
-<p>Proof: By Lemma 1, we have \<span class="math inline">\(n\frac{\hat{\sigma}^2}{\sigma^2}=\frac{\hat e^{{\bf T}}\hat e}{\sigma^2}={\bf y}^{{\bf T}}(\frac{{\bf I}_n-{\bf H}}{\sigma^2}) {\bf y}={\bf y}^{{\bf T}}{\bf A}{\bf y}\sim\chi^2(tr({\bf A}{\boldsymbol \Sigma}),\mu^{{\bf T}}{\bf A}\mu/2)\)</span></p>
-where <span class="math inline">\({\bf A}=\frac{{\bf I}_n-{\bf H}}{\sigma^2}\)</span>, <span class="math inline">\(\mu^{{\bf T}}{\bf A}\mu/2=({\bf X}{\boldsymbol \beta})^{{\bf T}}(\frac{{\bf I}_n-{\bf H}}{\sigma^2})({\bf X}{\boldsymbol \beta})/2=0\)</span>. <span class="math inline">\({\bf A}{\boldsymbol \Sigma}= (\frac{{\bf I}_n-{\bf H}}{\sigma^2})\sigma^2{\bf I}_n={\bf I}_n-{\bf H},\)</span> hence <span class="math inline">\(r({\bf A}{\boldsymbol \Sigma}) = n-p\)</span>. Therefore <span class="math inline">\(n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p)\)</span>
+
+<div class="proof">
+<p> <span class="proof"><em>Proof. </em></span> By Lemma <a href="intro.html#lem:lem1">1.1</a>, we have <br> <span class="math inline">\(n\frac{\hat{\sigma}^2}{\sigma^2}=\frac{\hat e^{{\bf T}}\hat e}{\sigma^2}={\bf y}^{{\bf T}}(\frac{{\bf I}_n-{\bf H}}{\sigma^2}) {\bf y}={\bf y}^{{\bf T}}{\bf A}{\bf y}\sim\chi^2(tr({\bf A}{\boldsymbol \Sigma}),\mu^{{\bf T}}{\bf A}\mu/2)\)</span></p>
+where <span class="math inline">\({\bf A}=\frac{{\bf I}_n-{\bf H}}{\sigma^2}\)</span>, <span class="math inline">\(\mu^{{\bf T}}{\bf A}\mu/2=({\bf X}{\boldsymbol \beta})^{{\bf T}}(\frac{{\bf I}_n-{\bf H}}{\sigma^2})({\bf X}{\boldsymbol \beta})/2=0\)</span>. <span class="math inline">\({\bf A}{\boldsymbol \Sigma}= (\frac{{\bf I}_n-{\bf H}}{\sigma^2})\sigma^2{\bf I}_n={\bf I}_n-{\bf H},\)</span> hence <span class="math inline">\(r({\bf A}{\boldsymbol \Sigma}) = n-p\)</span>. Therefore <span class="math inline">\(n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p)\)</span>.
+</div>
 
 
+<div class="lemma">
+<span id="lem:lem1" class="lemma"><strong>Lemma 1.1  </strong></span>Let <span class="math inline">\({\bf z}\sim \mathcal{N}_k(\mu,\Sigma)\)</span> with <span class="math inline">\(r(\Sigma)=k\)</span>, where <span class="math inline">\(r(\Sigma)\)</span> denotes the rank of <span class="math inline">\(\Sigma\)</span>.
+If <span class="math inline">\({\bf A}{\boldsymbol \Sigma}\)</span> (or <span class="math inline">\({\boldsymbol \Sigma}{\bf A}\)</span>) is an idempotent matrix of rank <span class="math inline">\(m\)</span>, then <span class="math inline">\({\bf z}^{{\bf T}}{\bf A}{\bf z}\)</span> follows the non-central chi-squared distribution with degrees of freedom <span class="math inline">\(m\)</span> and non-central parameter <span class="math inline">\(\lambda=\mu^{{\bf T}}{\bf A}\mu/2\)</span>.
+</div>
+
+</div>
+</div>
+<div id="bayesian-approach" class="section level2">
+<h2><span class="header-section-number">1.3</span> Bayesian approach</h2>
+<div id="sigma2-is-known" class="section level3">
+<h3><span class="header-section-number">1.3.1</span> <span class="math inline">\(\sigma^2\)</span> is known</h3>
+<p>Suppose <span class="math inline">\(\sigma^2\)</span> is known. We define the prior distribution of <span class="math inline">\({\boldsymbol \beta}\)</span> by
+<span class="math inline">\({\boldsymbol \beta}\sim \mathcal{N}_p({\boldsymbol 0},\sigma^2\nu{\bf I}_p)\)</span>. Then the posterior density of <span class="math inline">\({\boldsymbol \beta}\)</span> can be obtained by
+<span class="math display">\[\begin{eqnarray*}
+\pi ({\boldsymbol \beta}|{\bf y}) &amp;\propto&amp; f({\bf y}|{\boldsymbol \beta})\pi ({\boldsymbol \beta})   \\
+&amp;\propto&amp; \exp\left(-\frac{1}{2\sigma^2}\| {\bf y}-{\bf X}{\boldsymbol \beta}\|^2\right)\times \exp\left(-\frac{1}{2\sigma^2\nu}\|{\boldsymbol \beta}|^2\right)\\
+&amp;=&amp;\exp\left[-\frac{1}{2\sigma^2}\left\{ ({\bf y}-{\bf X}{\boldsymbol \beta})^{{\bf T}}({\bf y}-{\bf X}{\boldsymbol \beta}) + \frac{1}{\nu}{\boldsymbol \beta}^{{\bf T}} {\boldsymbol \beta}\right\}\right]\\
+&amp;\propto&amp;\exp\left\{-\frac{1}{2\sigma^2}\left( - 2 {\boldsymbol \beta}^{{\bf T}} {\bf X}^{{\bf T}} {\bf y}+ {\boldsymbol \beta}^{{\bf T}} {\bf X}^{{\bf T}} {\bf X}{\boldsymbol \beta}+ \frac{1}{\nu}{\boldsymbol \beta}^{\bf T}{\boldsymbol \beta}
+\right)\right\}\\
+&amp;=&amp;\exp\left\{-\frac{1}{2\sigma^2}\left( - 2 {\boldsymbol \beta}^{{\bf T}} \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right) \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right)^{-1}
+{\bf X}^{{\bf T}} {\bf y}+ {\boldsymbol \beta}^{{\bf T}} \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right){\boldsymbol \beta}\right)\right\}\\
+&amp;\propto&amp;\exp\left\{-\frac{1}{2\sigma^2}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}})^{{\bf T}} \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right)({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}}) \right\}
+\end{eqnarray*}\]</span>
+where <span class="math inline">\(\tilde{{\boldsymbol \beta}}=\left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}\right)^{-1} {\bf X}^{{\bf T}} {\bf y}\)</span>.</p>
+<p>This implies that
+<span class="math display">\[\begin{eqnarray}
+\label{eq:2} {\boldsymbol \beta}|{\bf y}\sim \mathcal{N}_p\left(\left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right)^{-1} {\bf X}^{{\bf T}} {\bf y},\sigma^{2} \left({\bf X}^{{\bf T}} {\bf X}
++\frac{1}{\nu}I_p\right)^{-1}\right).
+\end{eqnarray}\]</span>
+The Bayesian estimate <span class="math inline">\(\hat{\boldsymbol \beta}_{Bayes} = \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}I_p\right)^{-1} {\bf X}^{{\bf T}} {\bf y}\)</span>.
+It is worth noting that if <span class="math inline">\(\nu\to \infty\)</span>, the posterior distribution converges to the distribution of <span class="math inline">\(\hat{{\boldsymbol \beta}}_{MLE}\sim \mathcal{N}_p\left({\boldsymbol \beta}, \sigma^2 ({\bf X}^{{\bf T}} {\bf X})^{-1}\right)\)</span>.</p>
+</div>
+<div id="sigma2-is-unknown" class="section level3">
+<h3><span class="header-section-number">1.3.2</span> <span class="math inline">\(\sigma^2\)</span> is unknown</h3>
+<p>In general, <span class="math inline">\(\sigma^2\)</span> is unknown. Then, we need to assign a reasonable prior distribution for <span class="math inline">\(\sigma^2\)</span>. We consider the inverse gamma distribution,
+which is called a , as follows: <span class="math inline">\(\sigma^2\sim \mathcal{IG}(a_0,b_0)\)</span> with the density function
+<span class="math display">\[\begin{eqnarray}
+\pi(\sigma^2)=\frac{b_0^{a_0}}{\Gamma(a_0)}(\sigma^2)^{-a_0-1}\exp\left(-\frac{b_0}{\sigma^2}\right),
+\end{eqnarray}\]</span>
+where <span class="math inline">\(a_0&gt;0\)</span> and <span class="math inline">\(b_0&gt;0\)</span>. In addition, we need to introduce prior for <span class="math inline">\({\boldsymbol \beta}|\sigma^2\)</span>:</p>
+<p><span class="math display">\[{\boldsymbol \beta}|\sigma^2 \sim \mathcal{N}_p({\boldsymbol 0},\sigma^2\nu{\bf I}_p).\]</span></p>
+<p><span class="math inline">\(\color{red}{\text{Today, we derive the joint posterior distribution} \pi({\boldsymbol \beta},\sigma^2|{\bf y})\propto f({\bf y}|{\boldsymbol \beta},\sigma)\pi({\boldsymbol \beta}|\sigma^2)\pi(\sigma^2).}\)</span></p>
+<p>Show</p>
+<ul>
+<li><ol style="list-style-type: decimal">
+<li><span class="math inline">\(\pi(\sigma^2|{\boldsymbol \beta},{\bf y}) = \mathcal{IG}(a^*,b^*)\)</span></li>
+</ol></li>
+<li><ol start="2" style="list-style-type: decimal">
+<li><span class="math inline">\(\pi({\boldsymbol \beta}|{\bf y}) \sim\)</span> t-distribution with <span class="math inline">\(t^*\)</span></li>
+</ol></li>
+</ul>
+Then the posterior density function of <span class="math inline">\(\sigma^2\)</span> given <span class="math inline">\({\boldsymbol \beta},{\bf y}\)</span> can be obtained by
+
+<div class="proof">
+<p> <span class="proof"><em>Proof</em> (1). </span> <span class="math display">\[\begin{eqnarray*}
+&amp;&amp;\pi(\sigma^2|{\boldsymbol \beta},{\bf y}) = \frac{f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta},\sigma^2)}{\int f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta},\sigma^2)d\sigma^2}
+= \frac{f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta}|\sigma^2)\pi(\sigma^2)}{\int f({\bf y},{\boldsymbol \beta},\sigma^2)d\sigma^2}\\
+&amp;\propto&amp; f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta}|\sigma^2)\pi(\sigma^2)\\
+&amp;\propto&amp; (\sigma^2)^{-\frac{n}{2}}\exp\left(-\frac{1}{2\sigma^2}\|{\bf y}-{\bf X}{\boldsymbol \beta}\|^2\right) \times (\sigma^2)^{-\frac{p}{2}}\exp\left(
+-\frac{1}{2\sigma^2\nu}\|{\boldsymbol \beta}\|^2\right)\times (\sigma^2)^{-a_0-1}\exp \left(-\frac{b_0}{\sigma^2}\right)\\
+&amp;=&amp; (\sigma^2)^{-(\frac{n+p}{2}+a_0)-1}\exp \left[-\frac{1}{\sigma^2}\left\{\frac{1}{2}\|{\bf y}-{\bf X}{\boldsymbol \beta}\|^2+\frac{1}{2\nu}\|{\boldsymbol \beta}\|^2
++ b_0 \right\}\right]\\
+&amp;=&amp; (\sigma^2)^{-a^*-1} \exp(-\frac{b^*}{\sigma^2})
+\end{eqnarray*}\]</span>
+where <span class="math inline">\(a^* = \frac{n+p}{2}+a_0\)</span>, <span class="math inline">\(b^* = \frac{1}{2}\|{\bf y}-{\bf X}{\boldsymbol \beta}\|^2+\frac{1}{2\nu}\|{\boldsymbol \beta}\|^2 + b_0\)</span>.</p>
+This implies that
+<span class="math display">\[\begin{eqnarray}
+\sigma^2|{\boldsymbol \beta},{\bf y}\sim \mathcal{IG}\left(\frac{n+p}{2}+a_0, \frac{1}{2}\|{\bf y}-{\bf X}{\boldsymbol \beta}\|^2+\frac{1}{2\nu}\|{\boldsymbol \beta}\|^2 + b_0\right).
+\end{eqnarray}\]</span>
+</div>
+
+<p><br></p>
+
+<div class="proof">
+<p> <span class="proof"><em>Proof</em> (2). </span> <span class="math display">\[\begin{eqnarray*}
+&amp;&amp;\pi({\boldsymbol \beta}|{\bf y}) \\
+&amp;=&amp; \int\pi({\boldsymbol \beta},\sigma^2|{\bf y})d\sigma^2\\
+&amp;=&amp; \int \frac{f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta},\sigma^2)}{\iint f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta},\sigma^2)d{\boldsymbol \beta}d\sigma^2}d\sigma^2\\
+&amp;\propto&amp; \int f({\bf y}|{\boldsymbol \beta},\sigma^2)\pi({\boldsymbol \beta}|\sigma^2)\pi(\sigma^2) d\sigma^2\\
+&amp;\propto&amp;\Gamma(a^*)b^{-a^*}\\
+&amp;\propto&amp;{b^*}^{-a^*}\\
+&amp;=&amp;[\frac{1}{2}\|{\bf y}-{\bf X}{\boldsymbol \beta}\|^2+\frac{1}{2\nu}\|{\boldsymbol \beta}\|^2 + b_0]^{-a^*}\\
+&amp;\propto&amp;\left[({\bf y}-{\bf X}{\boldsymbol \beta})^T({\bf y}-{\bf X}{\boldsymbol \beta})+\frac{1}{\nu}{\boldsymbol \beta}^T{\boldsymbol \beta}- 2b_0 \right]^{-a^*}\\
+&amp;=&amp;\left[{\bf y}^T{\bf y}- 2{\boldsymbol \beta}^T{\bf X}^T{\bf y}+ {\boldsymbol \beta}^T{\bf X}^T{\bf X}{\boldsymbol \beta}+ \frac{1}{\nu}{\boldsymbol \beta}^T{\boldsymbol \beta}+2b_0 \right]^{-a^*}\\
+&amp;\propto&amp; \left[ {\boldsymbol \beta}^{{\bf T}} \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}{\bf I}_p\right){\boldsymbol \beta}- 2 {\boldsymbol \beta}^{{\bf T}} \left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}{\bf I}_p\right)
+\left({\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}{\bf I}_p\right)^{-1} {\bf X}^{{\bf T}} {\bf y}+ {\bf y}^T{\bf y}+2b_0  \right]^{-a^*}\\
+&amp;=&amp; \left[ {\boldsymbol \beta}^{{\bf T}}{\bf A}{\boldsymbol \beta}- 2{\boldsymbol \beta}^{{\bf T}}{\bf A}\tilde{{\boldsymbol \beta}} + \tilde{{\boldsymbol \beta}}^{{\bf T}} {\bf A}\tilde{{\boldsymbol \beta}} - \tilde{{\boldsymbol \beta}}^{{\bf T}}{\bf A}\tilde{{\boldsymbol \beta}}
++ {\bf y}^{{\bf T}}{\bf y}+2b_0\right]^{-a^*}\\
+&amp;=&amp; \left[ ({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T{\bf A}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}}) + {\bf y}^{{\bf T}}{\bf y}- {\bf y}^{{\bf T}}{\bf X}{\bf A}^{-1}{\bf X}^{{\bf T}}{\bf y}+ 2b_0\right]^{-a^*}\\
+&amp;=&amp; \left[ ({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T{\bf A}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}}) + {\bf y}^{{\bf T}}({\bf I}_n-{\bf X}{\bf A}^{-1}{\bf X}^{{\bf T}}){\bf y}+ 2b_0\right]^{-a^*}\\
+&amp;\propto&amp; \left[({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T{\bf A}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}}) + c^* \right]^{-a^*}\\
+&amp;\propto&amp;\left[1+ \frac{1}{c^*}({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T{\bf A}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}})\right]^{-\frac{n+p+2a_0}{2}}\\
+&amp;=&amp;\left[1+ \frac{\nu^*}{\nu^*c^*}({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T{\bf A}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}})\right]^{-\frac{p+\nu^*}{2}}\\
+&amp;=&amp;\left[1+ \frac{1}{\nu^*}({\boldsymbol \beta}- \tilde{{\boldsymbol \beta}})^T(\frac{c^*}{\nu^*}{\bf A}^{-1})^{-1}({\boldsymbol \beta}-\tilde{{\boldsymbol \beta}})\right]^{-\frac{p+\nu^*}{2}}\\
+\end{eqnarray*}\]</span>
+This implies that
+<span class="math display">\[\begin{eqnarray}
+\label{eq:3}{\boldsymbol \beta}|{\bf y}\sim {\bf \mathcal{MT}}(\tilde{{\boldsymbol \beta}},\frac{c^*}{\nu^*}{\bf A}^{-1},\nu^*),
+\end{eqnarray}\]</span></p>
+<p>where</p>
+<span class="math display">\[\begin{eqnarray*}
+{\bf A}&amp;=&amp;{\bf X}^{{\bf T}} {\bf X}+\frac{1}{\nu}{\bf I}_p,\\
+\tilde{{\boldsymbol \beta}} &amp;=&amp; {\bf A}^{-1} {\bf X}^{{\bf T}} {\bf y},\\
+c^* &amp;=&amp; {\bf y}^{{\bf T}}({\bf I}_n-{\bf X}{\bf A}^{-1}{\bf X}^{{\bf T}}){\bf y}+ 2b_0,\\
+\nu^* &amp;=&amp; n+2a_0.
+\end{eqnarray*}\]</span>
+</div>
+
+<p><br>
+Note: the density of a multiple t-distribution with <span class="math inline">\({\boldsymbol \Sigma},{\boldsymbol \mu}\)</span> and <span class="math inline">\(\nu\)</span> is
+<span class="math display">\[\begin{eqnarray*}
+\frac{\Gamma[(\nu+p)/2]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|{\boldsymbol \Sigma}|^{1/2}}\left[1+\frac{1}{\nu}({\bf X}- {\boldsymbol \mu})^{{\bf T}}
+\Sigma^{-1}({\bf X}-{\boldsymbol \mu})\right]^{-(\nu+p)/2}.
+\end{eqnarray*}\]</span></p>
+
+</div>
 </div>
 </div>
             </section>

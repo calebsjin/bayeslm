@@ -9,11 +9,15 @@ header-includes:
 - \usepackage{multirow}
 - \usepackage{float}
 - \usepackage{color}
+- \usepackage{xcolor}
 - \usepackage{amssymb}
 - \usepackage{amsthm}
+- \usepackage{setspace}
 output:
   html_document: default
 ---
+\newtheorem{lemma}{Lemma}
+
 \newcommand\pr{{\rm pr}}
 \newcommand\E{{\rm E}}
 \newcommand\V{{\rm Var}}
@@ -79,7 +83,7 @@ Consider a multiple linear regression model as follows:
 $$\uy=\uX\ubeta + \uepsilon,$$
 where $\uy=(y_1,y_2,\dots,y_n)^{\T}$ is the $n$-dimensional response vector, $\uX=(\ux_1,\ux_2, \dots, \ux_n)^{\T}$ is the $n\times p$ design matrix, and $\uepsilon \sim \mathcal{N}_n(\0,\sigma^2\uI_n)$. We assume that $p<n$ and $\uX$ is full rank. 
 
-## Maximum likelihood estimation
+## Maximum likelihood estimation (MLE) approach
 
 Since $\uy \sim \mathcal{N}_n(\uX\ubeta, \sigma^2\uI_n)$, the likelihood function is given as
 \begin{eqnarray*}
@@ -97,7 +101,7 @@ Note that $l(\ubeta,\sigma^2)$ is a concave function in $(\ubeta,\sigma^2)$. Hen
 by solving the following equations:
 \begin{eqnarray*}
 \frac{\partial l(\ubeta,\sigma^2)}{\partial \ubeta} &=&- \frac{1}{2\sigma^2}(-2\uX^{\T} \uy + 2\uX^{\T} \uX\ubeta)=0;
-
+\\
 \frac{\partial l(\ubeta,\sigma^2)}{\partial \sigma^2} &=&-\frac{n}{2}\frac{1}{\sigma^2} + \frac{1}{2}\frac{1}{(\sigma^2)^2}
 \mathbf{(\uy-\uX\ubeta)^T(\uy-\uX\ubeta)}=0.
 \end{eqnarray*}
@@ -106,25 +110,38 @@ Therefore, the MLEs of $\ubeta$ and $\sigma^2$ are given as
 \hat{\beta} &=& (\uX^{\T} \uX)^{-1}\uX^{\T} \uy;\\
 \hat{\sigma}^2 &=& \frac{(\uy-\uX\hat{\ubeta})^{\T}(\uy-\uX\hat{\ubeta})}{n}=\frac{ \|\uy-\hat{\uy}\|^2}{n},
 \end{eqnarray*}
-where $\hat{\uy}=\uX\hat{\ubeta}$. Note that if $\uz\sim \mathcal{N}_k(\mu,\Sigma)$, then $A\uz\sim \mathcal{N}_m(A\mu,A\Sigma A^{\T})$,
+where $\hat{\uy}=\uX\hat{\ubeta}$. 
+
+### Distribution of $\hat\ubeta$
+
+Note that if $\uz\sim \mathcal{N}_k(\mu,\Sigma)$, then $A\uz\sim \mathcal{N}_m(A\mu,A\Sigma A^{\T})$,
 where $A$ is an $m\times k$ matrix. Since $\uy \sim \mathcal{N}_n(\uX\ubeta, \sigma^2\uI_n)$ and $\hat{\ubeta} =(\uX^{\T} \uX)^{-1}\uX^{\T}\uy$,
 we have
 \begin{eqnarray*}
 \hat{\ubeta}  &\sim& \mathcal{N}_p\left( (\uX^{\T} \uX)^{-1}\uX^{\T}\uX\ubeta, \sigma^2 (\uX^{\T} \uX)^{-1}\uX^{\T}\uX (\uX^{\T} \uX)^{-1}\right)\\
 &=&\mathcal{N}_p\left(\ubeta, \sigma^2 (\uX^{\T} \uX)^{-1}\right).
 \end{eqnarray*}
+
+### Distribution of $\hat\sigma^2$
+
 Note that
-$\uy-\hat{\uy}=(\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T})\uy$, where $\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T}$ is an idempotent matrix of rank $(n-p)$.
+$\uy-\hat{\uy}=(\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T})\uy$, where $\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T}$ is an idempotent matrix with rank $(n-p)$.
 
 $\color{red}{\text{Can you prove that $\uI_n-\uX(\uX^{\T}\uX)^{-1}\uX^{\T}$ s an idempotent matrix of rank $(n-p)$ ?}}$ 
 
-Proof:
+```{proof}
 Let $\uH = \uX(\uX^{\T}\uX)^{-1}\uX^{\T}$.
 
 $\uH\uH = \uX(\uX^{\T}\uX)^{-1}\uX^{\T}\uX(\uX^{\T}\uX)^{-1}\uX^{\T}=\uX(\uX^{\T}\uX)^{-1}\uX^{\T}=\uH$
-,hence $\uH$ is idempotent matrix. Then $(\uI_n-\uH)(\uI_n-\uH) = \uI_n-\uH$, hence $(\uI_n-\uH)$ is also idempotent.
-hence we have $r(\uI_n-\uH)=tr(\uI_n-\uH)=n-tr(\uH)=n-tr((\uX^{\T}\uX)^{-1}\uX^{\T}\uX)=n-p$
+thus $\uH$ is idempotent matrix. 
+
+Similarly, as $(\uI_n-\uH)(\uI_n-\uH) = \uI_n-\uH$, $(\uI_n-\uH)$ is also idempotent.
+
+Hence we have $r(\uI_n-\uH)=tr(\uI_n-\uH)=n-tr(\uH)=n-tr((\uX^{\T}\uX)^{-1}\uX^{\T}\uX)=n-p$
+```
+
 $\color{red}{\text{How to prove $r(\uI_n-\uH)=tr(\uI_n-\uH)$? }}$
+
 The eigenvalue of idempotent matrix is either 1 or 0, hence the rank of it is the sum of eigenvalues, which equals the trace of matrix;
 
 $\color{red}{\text{How to prove trace of matrix is the sum of eigenvalues?}}$
@@ -134,20 +151,132 @@ It requires characteristic polynomial.
 Another way to prove this is in this 
 [link]("https://math.stackexchange.com/questions/101512/proving-the-trace-of-an-idempotent-matrix-equals-the-rank-of-the-matrix")
 
-From Lemma \ref{lem:1}, we have that
+From Lemma \@ref(lem:lem1), we have that
 \begin{eqnarray}
 \label{eq:1} n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p),
 \end{eqnarray}
 where $\chi^2(n-p)$ denotes the chi-squared distribution with degrees of freedom $n-p$.  \textcolor{red}{(Can you prove
 Eq. (\ref{eq:1})?)}
 
-Proof: By Lemma 1, we have \\$n\frac{\hat{\sigma}^2}{\sigma^2}=\frac{\hat e^{\T}\hat e}{\sigma^2}=\uy^{\T}(\frac{\uI_n-\uH}{\sigma^2})
+```{proof}
+By Lemma \@ref(lem:lem1), we have <br> $n\frac{\hat{\sigma}^2}{\sigma^2}=\frac{\hat e^{\T}\hat e}{\sigma^2}=\uy^{\T}(\frac{\uI_n-\uH}{\sigma^2})
 \uy=\uy^{\T}\uA\uy \sim\chi^2(tr(\uA\uSigma),\mu^{\T}\uA\mu/2)$
 
 where $\uA =\frac{\uI_n-\uH}{\sigma^2}$, $\mu^{\T}\uA\mu/2=(\uX\ubeta)^{\T}(\frac{\uI_n-\uH}{\sigma^2})(\uX\ubeta)/2=0$. $\uA\uSigma =
-(\frac{\uI_n-\uH}{\sigma^2})\sigma^2\uI_n=\uI_n-\uH,$ hence $r(\uA\uSigma) = n-p$. Therefore $n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p)$
-\begin{lemma}
-\label{lem:1} Let $\uz\sim \mathcal{N}_k(\mu,\Sigma)$ with $r(\Sigma)=k$, where $r(\Sigma)$ denotes the rank of $\Sigma$.
-If $A\Sigma$ (or $\Sigma \uA$) is an idempotent matrix of rank $m$, then $\uz^{\T}\uA\uz$ follows the non-central chi-squared distribution
-with degrees of freedom $m$ and non-central parameter $\lambda=\mu^{\T}\uA\mu/2$.
-\end{lemma}
+(\frac{\uI_n-\uH}{\sigma^2})\sigma^2\uI_n=\uI_n-\uH,$ hence $r(\uA\uSigma) = n-p$. Therefore $n\frac{\hat{\sigma}^2}{\sigma^2}\sim \chi^2(n-p)$.
+```
+```{lemma,lem1}
+Let $\uz\sim \mathcal{N}_k(\mu,\Sigma)$ with $r(\Sigma)=k$, where $r(\Sigma)$ denotes the rank of $\Sigma$.
+If $\uA\uSigma$ (or $\uSigma \uA$) is an idempotent matrix of rank $m$, then $\uz^{\T}\uA\uz$ follows the non-central chi-squared distribution with degrees of freedom $m$ and non-central parameter $\lambda=\mu^{\T}\uA\mu/2$.
+```
+
+## Bayesian approach
+
+### $\sigma^2$ is known
+
+Suppose $\sigma^2$ is known. We define the prior distribution of $\ubeta$ by
+$\ubeta\sim \mathcal{N}_p(\0,\sigma^2\nu\uI_p)$. Then the posterior density of $\ubeta$ can be obtained by
+\begin{eqnarray*}
+\pi (\ubeta|\uy) &\propto& f(\uy|\ubeta)\pi (\ubeta)   \\
+&\propto& \exp\left(-\frac{1}{2\sigma^2}\| \uy-\uX\ubeta\|^2\right)\times \exp\left(-\frac{1}{2\sigma^2\nu}\|\ubeta|^2\right)\\
+&=&\exp\left[-\frac{1}{2\sigma^2}\left\{ (\uy-\uX\ubeta)^{\T}(\uy-\uX\ubeta) + \frac{1}{\nu}\ubeta^{\T} \ubeta \right\}\right]\\
+&\propto&\exp\left\{-\frac{1}{2\sigma^2}\left( - 2 \ubeta^{\T} \uX^{\T} \uy  + \ubeta^{\T} \uX^{\T} \uX \ubeta + \frac{1}{\nu}\ubeta^\T\ubeta
+\right)\right\}\\
+&=&\exp\left\{-\frac{1}{2\sigma^2}\left( - 2 \ubeta^{\T} \left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right) \left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right)^{-1}
+\uX^{\T} \uy  + \ubeta^{\T} \left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right)\ubeta \right)\right\}\\
+&\propto&\exp\left\{-\frac{1}{2\sigma^2}(\ubeta-\tilde{\ubeta})^{\T} \left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right)(\ubeta-\tilde{\ubeta}) \right\}
+\end{eqnarray*}
+where $\tilde{\ubeta}=\left(\uX^{\T} \uX +\frac{1}{\nu}\right)^{-1} \uX^{\T} \uy$.
+
+This implies that
+\begin{eqnarray}
+\label{eq:2} \ubeta|\uy \sim \mathcal{N}_p\left(\left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right)^{-1} \uX^{\T} \uy,\sigma^{2} \left(\uX^{\T} \uX
++\frac{1}{\nu}I_p\right)^{-1}\right).
+\end{eqnarray}
+The Bayesian estimate $\hat\ubeta_{Bayes} = \left(\uX^{\T} \uX +\frac{1}{\nu}I_p\right)^{-1} \uX^{\T} \uy$.
+It is worth noting that if $\nu\to \infty$, the posterior distribution converges to the distribution of $\hat{\ubeta}_{MLE}\sim \mathcal{N}_p\left(\ubeta,
+\sigma^2 (\uX^{\T} \uX)^{-1}\right)$.
+
+### $\sigma^2$ is unknown
+
+In general, $\sigma^2$ is unknown. Then, we need to assign a reasonable prior distribution for $\sigma^2$. We consider the inverse gamma distribution,
+which is called a \emph{conjugate prior}, as follows: $\sigma^2\sim \mathcal{IG}(a_0,b_0)$ with the density function
+\begin{eqnarray}
+\pi(\sigma^2)=\frac{b_0^{a_0}}{\Gamma(a_0)}(\sigma^2)^{-a_0-1}\exp\left(-\frac{b_0}{\sigma^2}\right),
+\end{eqnarray}
+where $a_0>0$ and $b_0>0$. In addition, we need to introduce prior for $\ubeta|\sigma^2$:
+
+$$\ubeta|\sigma^2 \sim \mathcal{N}_p(\0,\sigma^2\nu\uI_p).$$
+
+
+$\color{red}{\text{Today, we derive the joint posterior distribution} \pi(\ubeta,\sigma^2|\uy)\propto f(\uy|\ubeta,\sigma)\pi(\ubeta|\sigma^2)\pi(\sigma^2).}$
+
+Show
+
+- (1) $\pi(\sigma^2|\ubeta,\uy) = \mathcal{IG}(a^*,b^*)$
+
+- (2) $\pi(\ubeta|\uy) \sim$ t-distribution with $t^*$
+
+Then the posterior density function of $\sigma^2$ given $\ubeta,\uy$ can be obtained by
+```{proof, name = '1'}
+\begin{eqnarray*}
+&&\pi(\sigma^2|\ubeta,\uy) = \frac{f(\uy|\ubeta,\sigma^2)\pi(\ubeta,\sigma^2)}{\int f(\uy|\ubeta,\sigma^2)\pi(\ubeta,\sigma^2)d\sigma^2}
+= \frac{f(\uy|\ubeta,\sigma^2)\pi(\ubeta|\sigma^2)\pi(\sigma^2)}{\int f(\uy,\ubeta,\sigma^2)d\sigma^2}\\
+&\propto& f(\uy|\ubeta,\sigma^2)\pi(\ubeta|\sigma^2)\pi(\sigma^2)\\
+&\propto& (\sigma^2)^{-\frac{n}{2}}\exp\left(-\frac{1}{2\sigma^2}\|\uy-\uX\ubeta\|^2\right) \times (\sigma^2)^{-\frac{p}{2}}\exp\left(
+-\frac{1}{2\sigma^2\nu}\|\ubeta\|^2\right)\times (\sigma^2)^{-a_0-1}\exp \left(-\frac{b_0}{\sigma^2}\right)\\
+&=& (\sigma^2)^{-(\frac{n+p}{2}+a_0)-1}\exp \left[-\frac{1}{\sigma^2}\left\{\frac{1}{2}\|\uy-\uX\ubeta\|^2+\frac{1}{2\nu}\|\ubeta\|^2
++ b_0 \right\}\right]\\
+&=& (\sigma^2)^{-a^*-1} \exp(-\frac{b^*}{\sigma^2})
+\end{eqnarray*}
+where $a^* = \frac{n+p}{2}+a_0$, $b^* = \frac{1}{2}\|\uy-\uX\ubeta\|^2+\frac{1}{2\nu}\|\ubeta\|^2 + b_0$.
+
+This implies that
+\begin{eqnarray}
+\sigma^2|\ubeta,\uy \sim \mathcal{IG}\left(\frac{n+p}{2}+a_0, \frac{1}{2}\|\uy-\uX\ubeta\|^2+\frac{1}{2\nu}\|\ubeta\|^2 + b_0\right).
+\end{eqnarray}
+```
+<br>
+
+```{proof, name = '2'}
+\begin{eqnarray*}
+&&\pi(\ubeta|\uy) \\
+&=& \int\pi(\ubeta,\sigma^2|\uy)d\sigma^2\\
+&=& \int \frac{f(\uy|\ubeta,\sigma^2)\pi(\ubeta,\sigma^2)}{\iint f(\uy|\ubeta,\sigma^2)\pi(\ubeta,\sigma^2)d\ubeta d\sigma^2}d\sigma^2\\
+&\propto& \int f(\uy|\ubeta,\sigma^2)\pi(\ubeta|\sigma^2)\pi(\sigma^2) d\sigma^2\\
+&\propto&\Gamma(a^*)b^{-a^*}\\
+&\propto&{b^*}^{-a^*}\\
+&=&[\frac{1}{2}\|\uy-\uX\ubeta\|^2+\frac{1}{2\nu}\|\ubeta\|^2 + b_0]^{-a^*}\\
+&\propto&\left[(\uy-\uX\ubeta)^T(\uy-\uX\ubeta)+\frac{1}{\nu}\ubeta^T\ubeta - 2b_0 \right]^{-a^*}\\
+&=&\left[\uy^T\uy - 2\ubeta^T\uX^T\uy + \ubeta^T\uX^T\uX\ubeta + \frac{1}{\nu}\ubeta^T\ubeta +2b_0 \right]^{-a^*}\\
+&\propto& \left[ \ubeta^{\T} \left(\uX^{\T} \uX +\frac{1}{\nu}\uI_p\right)\ubeta - 2 \ubeta^{\T} \left(\uX^{\T} \uX +\frac{1}{\nu}\uI_p\right)
+\left(\uX^{\T} \uX +\frac{1}{\nu}\uI_p\right)^{-1} \uX^{\T} \uy + \uy^T\uy +2b_0  \right]^{-a^*}\\
+&=& \left[ \ubeta^{\T}\uA\ubeta - 2\ubeta^{\T}\uA\tilde{\ubeta} + \tilde{\ubeta}^{\T} \uA \tilde{\ubeta} - \tilde{\ubeta}^{\T}\uA\tilde{\ubeta}
++ \uy^{\T}\uy +2b_0\right]^{-a^*}\\
+&=& \left[ (\ubeta- \tilde{\ubeta})^T\uA(\ubeta-\tilde{\ubeta}) + \uy^{\T}\uy - \uy^{\T}\uX\uA^{-1}\uX^{\T}\uy+ 2b_0\right]^{-a^*}\\
+&=& \left[ (\ubeta- \tilde{\ubeta})^T\uA(\ubeta-\tilde{\ubeta}) + \uy^{\T}(\uI_n-\uX\uA^{-1}\uX^{\T})\uy+ 2b_0\right]^{-a^*}\\
+&\propto& \left[(\ubeta- \tilde{\ubeta})^T\uA(\ubeta-\tilde{\ubeta}) + c^* \right]^{-a^*}\\
+&\propto&\left[1+ \frac{1}{c^*}(\ubeta- \tilde{\ubeta})^T\uA(\ubeta-\tilde{\ubeta})\right]^{-\frac{n+p+2a_0}{2}}\\
+&=&\left[1+ \frac{\nu^*}{\nu^*c^*}(\ubeta- \tilde{\ubeta})^T\uA(\ubeta-\tilde{\ubeta})\right]^{-\frac{p+\nu^*}{2}}\\
+&=&\left[1+ \frac{1}{\nu^*}(\ubeta- \tilde{\ubeta})^T(\frac{c^*}{\nu^*}\uA^{-1})^{-1}(\ubeta-\tilde{\ubeta})\right]^{-\frac{p+\nu^*}{2}}\\
+\end{eqnarray*}
+This implies that
+\begin{eqnarray}
+\label{eq:3}\ubeta|\uy \sim {\bf \mathcal{MT}}(\tilde{\ubeta},\frac{c^*}{\nu^*}\uA^{-1},\nu^*),
+\end{eqnarray}
+
+where 
+
+\begin{eqnarray*}
+\uA&=&\uX^{\T} \uX +\frac{1}{\nu}\uI_p,\\
+\tilde{\ubeta} &=& \uA^{-1} \uX^{\T} \uy,\\
+c^* &=& \uy^{\T}(\uI_n-\uX\uA^{-1}\uX^{\T})\uy+ 2b_0,\\
+\nu^* &=& n+2a_0.
+\end{eqnarray*}
+```
+<br>
+Note: the density of a multiple t-distribution with $\uSigma,\umu$ and $\nu$ is
+\begin{eqnarray*}
+\frac{\Gamma[(\nu+p)/2]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|\uSigma|^{1/2}}\left[1+\frac{1}{\nu}(\uX - \umu)^{\T}
+\Sigma^{-1}(\uX-\umu)\right]^{-(\nu+p)/2}.
+\end{eqnarray*}
