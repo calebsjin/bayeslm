@@ -1,0 +1,215 @@
+---
+header-includes:
+- \usepackage{bbm}
+- \usepackage{amsmath}
+- \usepackage{graphicx}
+- \usepackage{caption}
+- \usepackage{bm}
+- \usepackage{multirow}
+- \usepackage{float}
+- \usepackage{color}
+- \usepackage{amssymb}
+- \usepackage{amsthm}
+output:
+  pdf_document: default
+  html_document: default
+---
+\newcommand\pr{{\rm pr}}
+\newcommand\E{{\rm E}}
+\newcommand\V{{\rm Var}}
+\newcommand\uA{{\bf A}}
+\newcommand\ua{{\bf a}}
+\newcommand\uB{{\bf B}}
+\newcommand\ub{{\bf b}}
+\newcommand\uC{{\bf C}}
+\newcommand\uc{{\bf c}}
+\newcommand\uD{{\bf D}}
+\newcommand\ud{{\bf d}}
+\newcommand\ue{{\bf e}}
+\newcommand\uE{{\bf E}}
+\newcommand\uf{{\bf f}}
+\newcommand\uh{{\bf h}}
+\newcommand\ug{{\bf g}}
+\newcommand\uI{{\bf I}}
+\newcommand\uK{{\bf K}}
+\newcommand\um{{\bf m}}
+\newcommand\uM{{\bf M}}
+\newcommand\T{{\bf T}}
+\newcommand\bO{{\bf O}}
+\newcommand\bP{{\bf P}}
+\newcommand\uQ{{\bf Q}}
+\newcommand\uU{{\bf U}}
+\newcommand\uv{{\bf v}}
+\newcommand\uV{{\bf V}}
+\newcommand\uS{{\bf S}}
+\newcommand\uu{{\bf u}}
+\newcommand\uw{{\bf w}}
+\newcommand\uW{{\bf W}}
+\newcommand\uH{{\bf H}}
+\newcommand\uX{{\bf X}}
+\newcommand\ux{{\bf x}}
+\newcommand\uY{{\bf Y}}
+\newcommand\uy{{\bf y}}
+\newcommand\uZ{{\bf Z}}
+\newcommand\uz{{\bf z}}
+\newcommand\0{{\boldsymbol 0}}
+\newcommand\1{{\boldsymbol 1}}
+\newcommand\ubeta{{\boldsymbol \beta}}
+\newcommand\btau{{\boldsymbol \tau}}
+\newcommand\bg{{\boldsymbol \gamma}}
+\newcommand\ueta{{\boldsymbol \eta}}
+\newcommand\bpi{{\boldsymbol \pi}}
+\newcommand\uxi{{\boldsymbol \xi}}
+\newcommand\utheta{{\boldsymbol \theta}}
+\newcommand\umu{{\boldsymbol \mu}}
+\newcommand\uepsilon{{\boldsymbol \epsilon}}
+\newcommand\bOmega{{\boldsymbol\Omega}}
+\newcommand\uSigma{{\boldsymbol \Sigma}}
+\newcommand\uPsi{{\boldsymbol \Psi}}
+\newcommand\bLam{{\bf \Lambda}}
+\newcommand\ualpha{{\boldsymbol \alpha}}
+\newcommand\usigma{{\boldsymbol \sigma}}
+\newcommand\uphi{{\boldsymbol \phi}}
+\newcommand\nbd{{\rm nbd}}
+\newcommand\diag{{\rm diag}}
+
+# Monte Carlo Simulation
+
+
+Suppose $\sigma^2$ is unknown. If $\ubeta\sim \mathcal{N}_p(\0,\sigma^2\nu\uI_p)$, we know  the distribution of
+$\ubeta|\uy$ is Eq.\@ref(eq:3). According to this known distribution, we can easily compute the $E(\ubeta|\uy)$
+and $V(\ubeta|\uy)$. But in practice, the form of density function $\pi(\ubeta|\uy)$ is often an unknown and very
+complicated distribution, leading to be impossible to solve its integration directly. hence we turn to use numerical
+methods to solve this problem, such as Monte Carlo methods.
+
+For example, a form density function $\pi(\theta|\uy)$ is an unknown distribution. $E(\theta|\uy) = \int \theta\pi
+(\theta|\uy)d\theta$.  According to lemma \ref{lem:3}, $\bar X_{n} \rightarrow \mu = E(X)$ as $n \rightarrow \infty$.
+Therefore, if we indepedently generate $\theta^{(1)}, \theta^{(2)}, \ldots,\theta^{(M)}$ from $\pi(\theta|\uy)$,
+$M^{-1} \sum_{k=1}^M\theta^{(k)} \rightarrow E(\theta|\uy)$ as M $\rightarrow \infty$. However, there are two problems.
+
+(1) What if we cannot generate sample from $\pi(\theta|\uy)$
+
+(2) What if they are not identically and independently distributed. 
+
+The solutions to these two question are Monte Carlo (MC) method and Markov Chain Monte Carlo
+(MCMC). 
+
+For the first question, we can use importance sampling method.
+```{lemma, lem2-1}
+(Strong Law of Large Number)
+
+Let $X_{1}, X_{2},...$ be a sequence of i.i.d random variables, each having finite mean m. Then
+$$\Pr\left(\lim_{n\rightarrow\infty} \frac{1}{n}(X_{1}+X_{2}+...+X_{n} = m)\right) = 1.$$
+```
+
+## $\sigma^2$ is known
+
+### Importance Sampling
+
+To estimate mean value of parameters, usually we randomly sample from $\pi(\theta|\uy)$ and compute
+their mean value to estimate parameters. However, in practice, it is hard to generate sample
+directly from $\pi(\theta|\uy)$, because we don't know what speccific distribution it belongs to.
+hence we return to importance sampling method.
+Note that
+\begin{eqnarray*}
+E(\theta|\uy) &=& \int \theta\pi(\theta|\uy)d\theta\\
+&=& \int \theta \frac{\pi(\theta|\uy)}{g(\theta)}g(\theta)d\theta\\
+&=& \int h(\theta)g(\theta)d\theta \\
+&=& E\{h(\theta)\}
+\end{eqnarray*}
+where $h(\theta)=\theta \frac{\pi(\theta|\uy)}{g(\theta)}, g(\theta)$ is a known pdf. \\
+To estimate the variance of parameters, similarly,
+\begin{eqnarray*}
+Var(\theta|\uy) &=& E[\theta - E(\theta|\uy) ]^2 = \int (\theta- E(\theta|\uy))^2\pi(\theta|\uy)
+d\theta\\
+&=& \int (\theta- E(\theta|\uy))^2 \frac{\pi(\theta|\uy)}{g(\theta)}g(\theta)d\theta\\
+&=& \int h^{'}(\theta)g(\theta)d\theta \\
+&=& E\{h^{'}(\theta)\}
+\end{eqnarray*}
+where $h^{'}(\theta)=(\theta- E(\theta|\uy))^2 \frac{\pi(\theta|\uy)}{g(\theta)},$ and
+$g(\theta)$ is a known pdf.\\
+The importance sampling method can be implemented as follows:
+\begin{itemize}
+	\item[1)] Generate $\theta^{(1)}, \theta^{(2)},\ldots,\theta^{(M)}$ from $g(\theta)$.
+	\item[2)] Compute $h(\theta^{(1)}), h(\theta^{(2)}),\ldots,h(\theta^{(M)})$.
+\end{itemize}
+Note that
+$$
+\sum_{i=1}^M \frac{h(\theta_{i})}{M} \rightarrow E(h(\theta)) = E(\theta|\uy).\quad as
+\quad M \rightarrow\infty
+$$
+Estimating variance by importance sampling method is similarly.
+
+### Importance Sampling Simulation
+
+**Setup**
+
+Consider a single linear regression model as follows:
+
+\[y_i=\beta_0 +\beta_1 x_i+ \varepsilon_i\]
+where $\varepsilon_i \sim N(0,1), x_i\sim N(0,1), \beta_0 = 1, \beta_1 = 2,$ for $i=1,\ldots,100.$
+
+We already know that if $\ubeta\sim \mathcal{N}_p(\0,\sigma^2\nu\uI_p)$, then the distribution of
+$\ubeta|\uy$ is Eq.\@ref(eq:2).
+Assume $\sigma = 1$ is known and consider a known pdf $\pi(\ubeta) =
+\phi(\ubeta;(0,0), 10I_2)$, hence in this case, $\nu = 10$. Our simulation can be broken down into 3
+steps in following:
+
+(1) Find exact value of $E(\beta_{0}|\uy), E(\beta_{1}|\uy), V(\beta_{0}|\uy)$ and $V(\beta_{1}|\uy)$
+
+(2) Use the MC method to simulate the results above with size of 100, 1000 and 5000.
+
+(3) Use Importance Sampling Method to simulate relevant results with the same size in (2).
+Consider the known pdf of parameters are $\phi(\beta_0|1, 0.5)$ and $\phi(\beta_1|2, 0.5).$
+
+**Simulation Results**
+
+We use R softeware to do this simulation.
+
+(1) According to Eq.(\ref{eq:2}), compute $E(\ubeta|\uy)=\left(\uX^{\T} \uX + \frac{1}{\nu}I_p \right)^{-1} \uX^{\T} \uy$ and $Var(\ubeta|\uy)=\sigma^2 \left(\uX^{\T} \uX + \frac{1}{\nu}I_p \right)^{-1}$,
+where $\sigma =1$ and $\nu = 10$, then we get the following results:
+
+\begin{center}
+\begin{tabular}{cccc}
+\hline
+\multicolumn{4}{c}{Exact Calculation}\\
+\hline
+$E(\beta_0)$ & $E(\beta_1)$ & $Var(\beta_0)$ & $Var(\beta_1)$\\
+\hline
+1.107660 & 1.996823 & 0.0100056979 &  0.0109967641 \\
+\hline
+\end{tabular}
+\end{center}
+
+(2) Sample directly from normal distribution of Eq.\@ref(eq:2) with sample size of 100, 1000 and
+5000, then compute the mean and variance values of samples. hence we get the following results:
+\begin{center}
+\begin{tabular}{ c | c c c c }
+\hline
+\multicolumn{5}{c}{Monte Carlo Simulation}\\
+\hline
+Size & $E(\beta_0)$ & $E(\beta_1)$ & $Var(\beta_0)$ & $Var(\beta_1)$\\
+\hline
+100  & 1.103916 & 2.001518 & 0.009187138 & 0.01242899 \\
+1000 & 1.107062 & 1.992977 & 0.010760386 & 0.01235912 \\
+5000 & 1.108487 & 1.995926 & 0.009881541 & 0.01108607 \\
+\hline
+\end{tabular}
+\end{center}
+
+(3) Sample $\beta_0$ and $\beta_1$ directly from $\phi(\beta_0|1, 0.5)$ and $\phi(\beta_1|2, 0.5)$, respectively, with sample size of 100, 1000 and 5000. And then compute $h(\theta_i)$ and
+$h^{'}(\theta_i)$. Compute mean values of them to get estimates of expectation and variance. The
+final results are following:
+\begin{center}
+\begin{tabular}{ c | c c c c }
+\hline
+\multicolumn{5}{c}{Importance Sampling Method}\\
+\hline
+Size & $E(\beta_0)$ & $E(\beta_1)$ & $Var(\beta_0)$ & $Var(\beta_1)$\\
+\hline
+100  & 1.050015 & 2.062285 & 0.01749562 & 0.01269543 \\
+1000 & 1.132268 & 1.952093 & 0.01059205 & 0.01274156 \\
+5000 & 1.126902 & 2.047798 & 0.01067899 & 0.01367147 \\
+\hline
+\end{tabular}
+\end{center}

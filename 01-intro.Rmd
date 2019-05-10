@@ -1,5 +1,4 @@
 ---
-date: "February 14, 2019"
 header-includes:
 - \usepackage{bbm}
 - \usepackage{amsmath}
@@ -9,15 +8,12 @@ header-includes:
 - \usepackage{multirow}
 - \usepackage{float}
 - \usepackage{color}
-- \usepackage{xcolor}
 - \usepackage{amssymb}
 - \usepackage{amsthm}
-- \usepackage{setspace}
 output:
+  pdf_document: default
   html_document: default
 ---
-\newtheorem{lemma}{Lemma}
-
 \newcommand\pr{{\rm pr}}
 \newcommand\E{{\rm E}}
 \newcommand\V{{\rm Var}}
@@ -262,7 +258,8 @@ This implies that
 \end{eqnarray*}
 This implies that
 \begin{eqnarray}
-\label{eq:3}\ubeta|\uy \sim {\bf \mathcal{MT}}(\tilde{\ubeta},\frac{c^*}{\nu^*}\uA^{-1},\nu^*),
+\ubeta|\uy \sim {\bf \mathcal{MT}}(\tilde{\ubeta},\frac{c^*}{\nu^*}\uA^{-1},\nu^*),
+(\#eq:3)
 \end{eqnarray}
 
 where 
@@ -275,7 +272,7 @@ c^* &=& \uy^{\T}(\uI_n-\uX\uA^{-1}\uX^{\T})\uy+ 2b_0,\\
 \end{eqnarray*}
 ```
 <br>
-Note: the density of a multiple t-distribution with $\uSigma,\umu$ and $\nu$ is
+Note: the density of a multiple t-distribution with $\uSigma,\umu$ and $\nu$ is \@ref(eq:3)
 \begin{eqnarray*}
 \frac{\Gamma[(\nu+p)/2]}{\Gamma(\nu/2)\nu^{p/2}\pi^{p/2}|\uSigma|^{1/2}}\left[1+\frac{1}{\nu}(\uX - \umu)^{\T}
 \Sigma^{-1}(\uX-\umu)\right]^{-(\nu+p)/2}.

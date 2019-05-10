@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 2 Monte Carlo Simulation | Bayesian Linear Model</title>
+  <meta name="description" content="This is my note of Bayesian linear model, advised by Dr. Gyuhyeong Goh">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 2 Monte Carlo Simulation | Bayesian Linear Model" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is my note of Bayesian linear model, advised by Dr. Gyuhyeong Goh" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Monte Carlo Simulation | Bayesian Linear Model" />
+  
+  <meta name="twitter:description" content="This is my note of Bayesian linear model, advised by Dr. Gyuhyeong Goh" />
+  
+
+<meta name="author" content="Caleb Jin">
+
+
+<meta name="date" content="2019-05-09">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="intro.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Intro to Bayesian Linear Model</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Foreword</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#linear-model"><i class="fa fa-check"></i><b>1.1</b> Linear model</a></li>
+<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#maximum-likelihood-estimation-mle-approach"><i class="fa fa-check"></i><b>1.2</b> Maximum likelihood estimation (MLE) approach</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="intro.html"><a href="intro.html#distribution-of-hatubeta"><i class="fa fa-check"></i><b>1.2.1</b> Distribution of <span class="math inline">\(\hat\ubeta\)</span></a></li>
+<li class="chapter" data-level="1.2.2" data-path="intro.html"><a href="intro.html#distribution-of-hatsigma2"><i class="fa fa-check"></i><b>1.2.2</b> Distribution of <span class="math inline">\(\hat\sigma^2\)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#bayesian-approach"><i class="fa fa-check"></i><b>1.3</b> Bayesian approach</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="intro.html"><a href="intro.html#sigma2-is-known"><i class="fa fa-check"></i><b>1.3.1</b> <span class="math inline">\(\sigma^2\)</span> is known</a></li>
+<li class="chapter" data-level="1.3.2" data-path="intro.html"><a href="intro.html#sigma2-is-unknown"><i class="fa fa-check"></i><b>1.3.2</b> <span class="math inline">\(\sigma^2\)</span> is unknown</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="monte-carlo-simulation.html"><a href="monte-carlo-simulation.html"><i class="fa fa-check"></i><b>2</b> Monte Carlo Simulation</a><ul>
+<li class="chapter" data-level="2.1" data-path="monte-carlo-simulation.html"><a href="monte-carlo-simulation.html#sigma2-is-known-1"><i class="fa fa-check"></i><b>2.1</b> <span class="math inline">\(\sigma^2\)</span> is known</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="monte-carlo-simulation.html"><a href="monte-carlo-simulation.html#importance-sampling"><i class="fa fa-check"></i><b>2.1.1</b> Importance Sampling</a></li>
+<li class="chapter" data-level="2.1.2" data-path="monte-carlo-simulation.html"><a href="monte-carlo-simulation.html#importance-sampling-simulation"><i class="fa fa-check"></i><b>2.1.2</b> Importance Sampling Simulation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://www.sjin.name" target="blank">Caleb Jin|金时强</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bayesian Linear Model</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="monte-carlo-simulation" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Monte Carlo Simulation</h1>
+<p>Suppose <span class="math inline">\(\sigma^2\)</span> is unknown. If <span class="math inline">\({\boldsymbol \beta}\sim \mathcal{N}_p({\boldsymbol 0},\sigma^2\nu{\bf I}_p)\)</span>, we know the distribution of
+<span class="math inline">\({\boldsymbol \beta}|{\bf y}\)</span> is Eq.<a href="#eq:3">(<strong>??</strong>)</a>. According to this known distribution, we can easily compute the <span class="math inline">\(E({\boldsymbol \beta}|{\bf y})\)</span>
+and <span class="math inline">\(V({\boldsymbol \beta}|{\bf y})\)</span>. But in practice, the form of density function <span class="math inline">\(\pi({\boldsymbol \beta}|{\bf y})\)</span> is often an unknown and very
+complicated distribution, leading to be impossible to solve its integration directly. hence we turn to use numerical
+methods to solve this problem, such as Monte Carlo methods.</p>
+<p>For example, a form density function <span class="math inline">\(\pi(\theta|{\bf y})\)</span> is an unknown distribution. <span class="math inline">\(E(\theta|{\bf y}) = \int \theta\pi (\theta|{\bf y})d\theta\)</span>. According to lemma , <span class="math inline">\(\bar X_{n} \rightarrow \mu = E(X)\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span>.
+Therefore, if we indepedently generate <span class="math inline">\(\theta^{(1)}, \theta^{(2)}, \ldots,\theta^{(M)}\)</span> from <span class="math inline">\(\pi(\theta|{\bf y})\)</span>,
+<span class="math inline">\(M^{-1} \sum_{k=1}^M\theta^{(k)} \rightarrow E(\theta|{\bf y})\)</span> as M <span class="math inline">\(\rightarrow \infty\)</span>. However, there are two problems.</p>
+<ol style="list-style-type: decimal">
+<li><p>What if we cannot generate sample from <span class="math inline">\(\pi(\theta|{\bf y})\)</span></p></li>
+<li><p>What if they are not identically and independently distributed.</p></li>
+</ol>
+<p>The solutions to these two question are Monte Carlo (MC) method and Markov Chain Monte Carlo
+(MCMC).</p>
+For the first question, we can use importance sampling method.
+
+<div class="lemma">
+<p><span id="lem:lem2-1" class="lemma"><strong>Lemma 2.1  </strong></span>(Strong Law of Large Number)</p>
+Let <span class="math inline">\(X_{1}, X_{2},...\)</span> be a sequence of i.i.d random variables, each having finite mean m. Then
+<span class="math display">\[\Pr\left(\lim_{n\rightarrow\infty} \frac{1}{n}(X_{1}+X_{2}+...+X_{n} = m)\right) = 1.\]</span>
+</div>
+
+<div id="sigma2-is-known-1" class="section level2">
+<h2><span class="header-section-number">2.1</span> <span class="math inline">\(\sigma^2\)</span> is known</h2>
+<div id="importance-sampling" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Importance Sampling</h3>
+To estimate mean value of parameters, usually we randomly sample from <span class="math inline">\(\pi(\theta|{\bf y})\)</span> and compute
+their mean value to estimate parameters. However, in practice, it is hard to generate sample
+directly from <span class="math inline">\(\pi(\theta|{\bf y})\)</span>, because we don’t know what speccific distribution it belongs to.
+hence we return to importance sampling method.
+Note that
+<span class="math display">\[\begin{eqnarray*}
+E(\theta|{\bf y}) &amp;=&amp; \int \theta\pi(\theta|{\bf y})d\theta\\
+&amp;=&amp; \int \theta \frac{\pi(\theta|{\bf y})}{g(\theta)}g(\theta)d\theta\\
+&amp;=&amp; \int h(\theta)g(\theta)d\theta \\
+&amp;=&amp; E\{h(\theta)\}
+\end{eqnarray*}\]</span>
+where <span class="math inline">\(h(\theta)=\theta \frac{\pi(\theta|{\bf y})}{g(\theta)}, g(\theta)\)</span> is a known pdf. \
+To estimate the variance of parameters, similarly,
+<span class="math display">\[\begin{eqnarray*}
+Var(\theta|{\bf y}) &amp;=&amp; E[\theta - E(\theta|{\bf y}) ]^2 = \int (\theta- E(\theta|{\bf y}))^2\pi(\theta|{\bf y})
+d\theta\\
+&amp;=&amp; \int (\theta- E(\theta|{\bf y}))^2 \frac{\pi(\theta|{\bf y})}{g(\theta)}g(\theta)d\theta\\
+&amp;=&amp; \int h^{&#39;}(\theta)g(\theta)d\theta \\
+&amp;=&amp; E\{h^{&#39;}(\theta)\}
+\end{eqnarray*}\]</span>
+where <span class="math inline">\(h^{&#39;}(\theta)=(\theta- E(\theta|{\bf y}))^2 \frac{\pi(\theta|{\bf y})}{g(\theta)},\)</span> and
+<span class="math inline">\(g(\theta)\)</span> is a known pdf.\
+The importance sampling method can be implemented as follows:
+
+<p>Note that
+<span class="math display">\[
+\sum_{i=1}^M \frac{h(\theta_{i})}{M} \rightarrow E(h(\theta)) = E(\theta|{\bf y}).\quad as
+\quad M \rightarrow\infty
+\]</span>
+Estimating variance by importance sampling method is similarly.</p>
+</div>
+<div id="importance-sampling-simulation" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Importance Sampling Simulation</h3>
+<p><strong>Setup</strong></p>
+<p>Consider a single linear regression model as follows:</p>
+<p><span class="math display">\[y_i=\beta_0 +\beta_1 x_i+ \varepsilon_i\]</span>
+where <span class="math inline">\(\varepsilon_i \sim N(0,1), x_i\sim N(0,1), \beta_0 = 1, \beta_1 = 2,\)</span> for <span class="math inline">\(i=1,\ldots,100.\)</span></p>
+<p>We already know that if <span class="math inline">\({\boldsymbol \beta}\sim \mathcal{N}_p({\boldsymbol 0},\sigma^2\nu{\bf I}_p)\)</span>, then the distribution of
+<span class="math inline">\({\boldsymbol \beta}|{\bf y}\)</span> is Eq.<a href="#eq:2">(<strong>??</strong>)</a>.
+Assume <span class="math inline">\(\sigma = 1\)</span> is known and consider a known pdf <span class="math inline">\(\pi({\boldsymbol \beta}) = \phi({\boldsymbol \beta};(0,0), 10I_2)\)</span>, hence in this case, <span class="math inline">\(\nu = 10\)</span>. Our simulation can be broken down into 3
+steps in following:</p>
+<ol style="list-style-type: decimal">
+<li><p>Find exact value of <span class="math inline">\(E(\beta_{0}|{\bf y}), E(\beta_{1}|{\bf y}), V(\beta_{0}|{\bf y})\)</span> and <span class="math inline">\(V(\beta_{1}|{\bf y})\)</span></p></li>
+<li><p>Use the MC method to simulate the results above with size of 100, 1000 and 5000.</p></li>
+<li><p>Use Importance Sampling Method to simulate relevant results with the same size in (2).
+Consider the known pdf of parameters are <span class="math inline">\(\phi(\beta_0|1, 0.5)\)</span> and <span class="math inline">\(\phi(\beta_1|2, 0.5).\)</span></p></li>
+</ol>
+<p><strong>Simulation Results</strong></p>
+<p>We use R softeware to do this simulation.</p>
+<ol style="list-style-type: decimal">
+<li>According to Eq.(), compute <span class="math inline">\(E({\boldsymbol \beta}|{\bf y})=\left({\bf X}^{{\bf T}} {\bf X}+ \frac{1}{\nu}I_p \right)^{-1} {\bf X}^{{\bf T}} {\bf y}\)</span> and <span class="math inline">\(Var({\boldsymbol \beta}|{\bf y})=\sigma^2 \left({\bf X}^{{\bf T}} {\bf X}+ \frac{1}{\nu}I_p \right)^{-1}\)</span>,
+where <span class="math inline">\(\sigma =1\)</span> and <span class="math inline">\(\nu = 10\)</span>, then we get the following results:</li>
+</ol>
+
+<ol start="2" style="list-style-type: decimal">
+<li>Sample directly from normal distribution of Eq.<a href="#eq:2">(<strong>??</strong>)</a> with sample size of 100, 1000 and
+5000, then compute the mean and variance values of samples. hence we get the following results:</li>
+<li>Sample <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> directly from <span class="math inline">\(\phi(\beta_0|1, 0.5)\)</span> and <span class="math inline">\(\phi(\beta_1|2, 0.5)\)</span>, respectively, with sample size of 100, 1000 and 5000. And then compute <span class="math inline">\(h(\theta_i)\)</span> and
+<span class="math inline">\(h^{&#39;}(\theta_i)\)</span>. Compute mean values of them to get estimates of expectation and variance. The
+final results are following:</li>
+</ol>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["bayeslm.pdf", "bayeslm.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
