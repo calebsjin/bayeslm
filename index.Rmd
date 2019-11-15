@@ -1,4 +1,4 @@
---- 
+---
 title: "Bayesian Linear Model"
 author: "Caleb Jin"
 date: "`r Sys.Date()`"
@@ -11,5 +11,4 @@ biblio-style: apalike
 ---
 
 # Foreword {-#Foreword}
-I am Caleb Jin. This is my note of Bayesian linear regression model under the guidance of [Dr. Gyuhyeong Goh](https://sites.google.com/site/bayesiangoh/). It includes both derivative details, proof of lemma, ggplot and Rshiny to illustrate Bayesian linear regression model. In this way, I can organize my thought and benefit readers hopefully. Due to my very limited statistics knowledge, if making any mistakes, I sincerely expect you guys can email to me. My email address is jinsq@ksu.edu. Appreicate! 
-
+I am Caleb Jin. This is my note of Bayesian linear regression model. It includes both derivative details, proof of lemma, ggplot and Rshiny to illustrate Bayesian linear regression model. In this way, I can organize my thought and benefit readers hopefully. Due to my very limited statistics knowledge, if making any mistakes, I sincerely expect you guys can email to me. My email address is jinsq@ksu.edu. Appreicate! 
